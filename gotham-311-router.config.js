@@ -13,9 +13,9 @@
 const paths = {
     DEFAULT: [ 'localhost:8000' ],
     api: {
-        DEFAULT: [ 'localhost:5500' ]
+        DEFAULT: [ 'localhost:5500' ],
     },
     employee: {
-        DEFAULT: [ 'localhost:8080' ]
-    }
+        DEFAULT: [ 'localhost:8080' ],
+    },
 }
