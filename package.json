@@ -1,0 +1,9 @@
+{
+  "name": "gotham-311-router",
+  "version": "0.0.1",
+  "description": "Router service for the gotham-311 project",
+  "main": "index.js",
+  "repository": "https://github.com/HRNYC32-BlueOcean/Gotham-311-Router",
+  "author": "DavidDavydovTech <davydovjd611@gmail.com>",
+  "license": "MIT"
+}
