@@ -2,7 +2,9 @@ const net = require('net');
 const { on } = require('process');
 
 net
-    .createServer()
+    .createServer(function (data) {
+        data.setEncoding('utf8');
+    })
     .on("connection", (req) => {
         req.on("data", async (data) => {
             // Var that holds our subdomain
@@ -11,7 +13,7 @@ net
             let reqPath = null;
             // Tries to find the subdomain
             try {
-                hostLine = data.toString()
+                hostLine = data
                     .match(/host:.{0,}/gi)[0] // Match the first instance of 'Host:'
                 
                 subdomain = hostLine// Get what's between 'host: ' and '.gotham311.xyz' (returns null if nothing found)
@@ -23,6 +25,7 @@ net
                     if (reqPath !== null) reqPath = reqPath[0]; // If we didn't get null we only want the first result
                 
                 console.log(subdomain, reqPath)
+                console.log(data)
             } catch (err) {
                 req.send('Error')
             }
@@ -72,13 +75,18 @@ net
         host: "127.0.0.1",
     });
 
-const forwardRequest = function ({port, location, data, req}) {
+const forwardRequest = function ({port, location, data, req, subdomain, path}) {
     // Create a new socket
     let middleMan = new net.Socket();
+    // Split the request up and inject the 'original' url (...@#%$ heroku :/)
+    let refittedData = data.split('\n');
+    refittedData[1] = `Host: ${location}${path !== null ? path : ''}`;
+    refittedData.join('\n');
+    refittedData = new Buffer(refittedData, 'utf8');
     // Connect to the main site
     middleMan.connect(port, location, function () {
         // Forward the request
-        middleMan.write(data);
+        middleMan.write(refittedData);
     });
     // When we get data back...
     middleMan.on("data", function (res) {
