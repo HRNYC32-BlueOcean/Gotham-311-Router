@@ -19,7 +19,7 @@ net
                     if (subdomain !== null) subdomain = subdomain[0]; // If we didn't get null we only want the first result
 
                 reqPath = hostLine
-                    .match(/(?<=host:[^/]{0,}).{0,}/gi);
+                    .match(/(?<=host:[^/]{0,})\/.{0,}/gi);
                     if (reqPath !== null) reqPath = reqPath[0]; // If we didn't get null we only want the first result
                 
                 console.log(subdomain, reqPath)
