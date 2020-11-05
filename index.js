@@ -22,17 +22,11 @@ net
                 case null:
                 case 'www':
                     console.log('Hit main site')
-                    // Create a new socket
-                    let middleMan = new net.Socket();
-                    // Connect to the main site
-                    middleMan.connect('443', 'desolate-journey-88560.herokuapp.com', function () {
-                        // Forward the request
-                        middleMan.write(data);
-                    });
-                    // When we get data back...
-                    middleMan.on("data", function (res) {
-                        // Hand the response back to the requestee
-                        req.write(res);
+                    forwardRequest({
+                        location: 'desolate-journey-88560.herokuapp.com',
+                        port: 80,
+                        data,
+                        req
                     });
                     break;
                 case 'api':
@@ -60,12 +54,17 @@ net
         host: "127.0.0.1",
     });
 
-const forwardRequest = function ({location, port, request, stream}) {
-        let middleMan = new net.Socket();
-        middleMan.connect(port, location, function () {
-            middleMan.write(request);
-        });
-        middleMan.on("data", function (received_data) {
-            stream.write(received_data);
-        });
+const forwardRequest = function ({location, port, data, req}) {
+    // Create a new socket
+    let middleMan = new net.Socket();
+    // Connect to the main site
+    middleMan.connect(port, location, function () {
+        // Forward the request
+        middleMan.write(data);
+    });
+    // When we get data back...
+    middleMan.on("data", function (res) {
+        // Hand the response back to the requestee
+        req.write(res);
+    });
 }
