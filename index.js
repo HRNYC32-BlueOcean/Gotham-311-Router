@@ -21,20 +21,29 @@ net
             switch(subdomain) {
                 case null:
                 case 'www':
-                    console.log('Hit main site')
                     forwardRequest({
+                        port: 443,
                         location: 'desolate-journey-88560.herokuapp.com',
-                        port: 80,
                         data,
                         req
                     });
                     break;
                 case 'api':
-                    console.log('Hit api')
+                    forwardRequest({
+                        port: 443,
+                        location: 'nameless-mountain-18450.herokuapp.com',
+                        data,
+                        req
+                    });
                     break;
                 case 'employee':
-                    console.log('Hit employee site')
-                    break;
+                    forwardRequest({
+                        port: 443,
+                        location: 'dry-temple-86477.herokuapp.com',
+                        data,
+                        req
+                    }); 
+                    break;  
                 default:
                     console.log('404')
             }
@@ -54,7 +63,7 @@ net
         host: "127.0.0.1",
     });
 
-const forwardRequest = function ({location, port, data, req}) {
+const forwardRequest = function ({port, location, data, req}) {
     // Create a new socket
     let middleMan = new net.Socket();
     // Connect to the main site
