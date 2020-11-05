@@ -6,14 +6,23 @@ net
     .on("connection", (req) => {
         req.on("data", async (data) => {
             // Var that holds our subdomain
+            let hostLine = null;
             let subdomain = null;
+            let reqPath = null;
             // Tries to find the subdomain
             try {
-                subdomain = data.toString()
+                hostLine = data.toString()
                     .match(/host:.{0,}/gi)[0] // Match the first instance of 'Host:'
-                    // Get what's between 'host: ' and '.gotham311.xyz' (returns null if nothing found)
+                
+                subdomain = hostLine// Get what's between 'host: ' and '.gotham311.xyz' (returns null if nothing found)
                     .match(/(?<=host:[ ]{0,})([^ ][^.]{0,})(?=.gotham311.xyz)/gi);
-                if (subdomain !== null) subdomain = subdomain[0]; // If we didn't get null we only want the first result
+                    if (subdomain !== null) subdomain = subdomain[0]; // If we didn't get null we only want the first result
+
+                reqPath = hostLine
+                    .match(/(?<=host:[^/]{0,}).{0,}/gi);
+                    if (reqPath !== null) reqPath = reqPath[0]; // If we didn't get null we only want the first result
+                
+                console.log(subdomain, reqPath)
             } catch (err) {
                 req.send('Error')
             }
