@@ -22,7 +22,7 @@ net
                 case null:
                 case 'www':
                     forwardRequest({
-                        port: 443,
+                        port: 80,
                         location: 'desolate-journey-88560.herokuapp.com',
                         data,
                         req
@@ -30,7 +30,7 @@ net
                     break;
                 case 'api':
                     forwardRequest({
-                        port: 443,
+                        port: 80,
                         location: 'nameless-mountain-18450.herokuapp.com',
                         data,
                         req
@@ -38,7 +38,7 @@ net
                     break;
                 case 'employee':
                     forwardRequest({
-                        port: 443,
+                        port: 80,
                         location: 'dry-temple-86477.herokuapp.com',
                         data,
                         req
