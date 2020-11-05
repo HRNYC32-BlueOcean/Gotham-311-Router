@@ -83,8 +83,9 @@ const forwardRequest = function ({port, location, data, req, path}) {
     let middleMan = new net.Socket();
     // Split the request up and inject the 'original' url (...@#%$ heroku :/)
     let refittedData = data.split('\n');
-    refittedData[1] = `Host: ${location}${path !== null ? path : ''}`;
-    refittedData.join('\n');
+    refittedData[1] = `Host: ${location}${path !== null ? path : ''}\r`;
+    refittedData = refittedData.join('\n');
+    console.log([refittedData]);
     refittedData = Buffer.from(refittedData, 'utf8');
     // Connect to the main site
     middleMan.connect(port, location, function () {
