@@ -37,7 +37,8 @@ net
                         port: 80,
                         location: 'desolate-journey-88560.herokuapp.com',
                         data,
-                        req
+                        req,
+                        path: reqPath
                     });
                     break;
                 case 'api':
@@ -45,7 +46,8 @@ net
                         port: 80,
                         location: 'nameless-mountain-18450.herokuapp.com',
                         data,
-                        req
+                        req,
+                        path: reqPath
                     });
                     break;
                 case 'employee':
@@ -53,7 +55,8 @@ net
                         port: 80,
                         location: 'dry-temple-86477.herokuapp.com',
                         data,
-                        req
+                        req,
+                        path: reqPath
                     }); 
                     break;  
                 default:
@@ -75,14 +78,14 @@ net
         host: "127.0.0.1",
     });
 
-const forwardRequest = function ({port, location, data, req, subdomain, path}) {
+const forwardRequest = function ({port, location, data, req, path}) {
     // Create a new socket
     let middleMan = new net.Socket();
     // Split the request up and inject the 'original' url (...@#%$ heroku :/)
     let refittedData = data.split('\n');
     refittedData[1] = `Host: ${location}${path !== null ? path : ''}`;
     refittedData.join('\n');
-    refittedData = new Buffer(refittedData, 'utf8');
+    refittedData = Buffer.from(refittedData, 'utf8');
     // Connect to the main site
     middleMan.connect(port, location, function () {
         // Forward the request
