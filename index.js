@@ -1,4 +1,5 @@
 const net = require('net');
+const { on } = require('process');
 
 net
     .createServer()
@@ -31,14 +32,28 @@ net
                 default:
                     console.log('404')
             }
-            console.log(subdomain)
         });
     })
     .on("error", (err) => {
         throw err;
     })
+    on('end', () => {
+        // Do stuff
+    })
+    .on('timeout', () => {
+        // Do stuff
+    })
     .listen({
         port: 8080,
         host: "127.0.0.1",
     });
-  
+
+const forwardRequest = function (location, port, request, stream) {
+        let middleMan = new net.Socket();
+        middleMan.connect(port, location, function () {
+            middleMan.write(request);
+        });
+        middleMan.on("data", function (received_data) {
+            stream.write(received_data);
+        });
+}
