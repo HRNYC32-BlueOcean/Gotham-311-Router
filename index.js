@@ -7,6 +7,7 @@ net
     })
     .on("connection", (req) => {
         req.on("data", async (data) => {
+            console.log([data])
             // Var that holds our subdomain
             let hostLine = null;
             let subdomain = null;
@@ -25,7 +26,6 @@ net
                     if (reqPath !== null) reqPath = reqPath[0]; // If we didn't get null we only want the first result
                 
                 console.log(subdomain, reqPath)
-                console.log(data)
             } catch (err) {
                 req.send('Error')
             }
@@ -83,7 +83,14 @@ const forwardRequest = function ({port, location, data, req, path}) {
     let middleMan = new net.Socket();
     // Split the request up and inject the 'original' url (...@#%$ heroku :/)
     let refittedData = data.split('\n');
-    refittedData[1] = `Host: ${location}${path !== null ? path : ''}\r`;
+    let hostLocation = 0;
+    for (let line of refittedData) {
+        if (line.includes('Host:')) {
+            break;
+        }
+        hostLocation += 1;
+    }
+    refittedData[hostLocation] = `Host: ${location}${path !== null ? path : ''}\r`;
     refittedData = refittedData.join('\n');
     console.log([refittedData]);
     refittedData = Buffer.from(refittedData, 'utf8');
