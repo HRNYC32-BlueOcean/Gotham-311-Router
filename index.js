@@ -4,15 +4,19 @@ net
     .createServer()
     .on("connection", (req) => {
         req.on("data", async (data) => {
+            // Var that holds our subdomain
             let subdomain = null;
+            // Tries to find the subdomain
             try {
                 subdomain = data.toString()
-                    .match(/host:.{0,}/gi)[0]
+                    .match(/host:.{0,}/gi)[0] // Match the first instance of 'Host:'
+                    // Get what's between 'host: ' and '.gotham311.xyz' (returns null if nothing found)
                     .match(/(?<=host:[ ]{0,})([^ ][^.]{0,})(?=.gotham311.xyz)/gi);
-                if (subdomain !== null) subdomain = subdomain[0];
+                if (subdomain !== null) subdomain = subdomain[0]; // If we didn't get null we only want the first result
             } catch (err) {
                 req.send('Error')
             }
+            // Do different things based on what we got
             switch(subdomain) {
                 case null:
                 case 'www':
