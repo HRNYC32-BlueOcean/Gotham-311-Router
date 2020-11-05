@@ -8,13 +8,26 @@ net
             try {
                 subdomain = data.toString()
                     .match(/host:.{0,}/gi)[0]
-                    .match(/(?<=host:[ ]{0,})([^ ][^.]{0,})(?=.gotham311.xyz)/gi)
+                    .match(/(?<=host:[ ]{0,})([^ ][^.]{0,})(?=.gotham311.xyz)/gi);
+                if (subdomain !== null) subdomain = subdomain[0];
             } catch (err) {
                 req.send('Error')
             }
-                // [0];
-            console.log(data);
-            console.log('Subdomain:', subdomain);
+            switch(subdomain) {
+                case null:
+                case 'www':
+                    console.log('Hit main site')
+                    break;
+                case 'api':
+                    console.log('Hit api')
+                    break;
+                case 'employee':
+                    console.log('Hit employee site')
+                    break;
+                default:
+                    console.log('404')
+            }
+            console.log(subdomain)
         });
     })
     .on("error", (err) => {
