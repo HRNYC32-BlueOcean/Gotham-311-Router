@@ -1,6 +1,6 @@
-const net = require('net');
+const tls = require('tls');
 console.log('File read')
-net
+tls
     .createServer(function (data) {
         console.log('Server Created')
         data.setEncoding('utf8');
@@ -82,7 +82,7 @@ net
 
 const forwardRequest = function ({port, location, data, req, path}) {
     // Create a new socket
-    let middleMan = new net.Socket();
+    let middleMan = new tls.TLSSocket();
     // Split the request up and inject the 'original' url (...@#%$ heroku :/)
     let refittedData = data.split('\n');
     let hostLocation = 0;
