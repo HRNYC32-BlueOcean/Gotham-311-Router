@@ -6,8 +6,7 @@ net
         data.setEncoding('utf8');
     })
     .on("connection", (req) => {
-        req.on("data", async (data) => {
-            console.log([data])
+        req.on("data", (data) => {
             // Var that holds our subdomain
             let hostLine = null;
             let subdomain = null;
@@ -27,7 +26,8 @@ net
                 
                 console.log(subdomain, reqPath)
             } catch (err) {
-                req.send('Error')
+                console.log(err);
+                req.write('Error')
             }
             // Do different things based on what we got
             switch(subdomain) {
@@ -94,7 +94,6 @@ const forwardRequest = function ({port, location, data, req, path}) {
     }
     refittedData[hostLocation] = `Host: ${location}${path !== null ? path : ''}\r`;
     refittedData = refittedData.join('\n');
-    console.log([refittedData]);
     refittedData = Buffer.from(refittedData, 'utf8');
     // Connect to the main site
     middleMan.connect(port, location, function () {
