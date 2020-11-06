@@ -33,9 +33,13 @@ net
                     console.log(subdomain, reqPath)
                 };
             } catch (err) {
-                console.log(data)
-                console.log(err);
-                req.write('Error')
+                console.log('Request that caused error:', data);
+                console.log('Error while trying to parse Host from the above request:', err);
+                try {
+                    req.write('Error')
+                } catch (writeErr) {
+                    console.log('Error writing 404 Message (the socket probably closed...):', writeErr);
+                }
             }
             // Do different things based on what we got
             switch(subdomain) {
