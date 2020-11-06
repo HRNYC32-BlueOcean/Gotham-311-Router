@@ -29,6 +29,7 @@ net
                 
                 console.log(subdomain, reqPath)
             } catch (err) {
+                console.log(data)
                 console.log(err);
                 req.write('Error')
             }
