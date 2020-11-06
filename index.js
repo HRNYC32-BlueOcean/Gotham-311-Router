@@ -107,6 +107,7 @@ const forwardRequest = function ({port, location, data, req, path}) {
     let didEnd = false;
     req.on('end' , () => didEnd = true);
     req.on('timeout', () => didEnd = true);
+    req.on('close' , () => didEnd = true);
     // When we get data back...
     middleMan.on("data", function (res) {
         // Hand the response back to the requestee
