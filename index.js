@@ -101,6 +101,8 @@ const forwardRequest = function ({port, location, data, req, path}) {
         // Forward the request
         middleMan.write(refittedData);
     });
+    // Set up keepAlive to avoid errors with sockets closing early:
+    req.setKeepAlive(true, 5000);
     // When we get data back...
     middleMan.on("data", function (res) {
         // Hand the response back to the requestee
