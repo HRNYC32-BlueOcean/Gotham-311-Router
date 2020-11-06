@@ -112,6 +112,8 @@ const forwardRequest = function ({port, location, data, req, path}) {
         // Hand the response back to the requestee
         if (didEnd === false) {
             req.write(res);
+        } else {
+            req.close();
         }
     });
 }
