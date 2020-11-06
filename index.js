@@ -103,9 +103,14 @@ const forwardRequest = function ({port, location, data, req, path}) {
     });
     // Set up keepAlive to avoid errors with sockets closing early:
     req.setKeepAlive(true, 5000);
+    // Set up handling to make sure we can deal with a closed socket:
+    let didEnd = false;
+    req.on('end' , () => didEnd = true)
     // When we get data back...
     middleMan.on("data", function (res) {
         // Hand the response back to the requestee
-        req.write(res);
+        if (didEnd === false) {
+            req.write(res);
+        }
     });
 }
