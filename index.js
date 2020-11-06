@@ -33,12 +33,12 @@ net
                     console.log(subdomain, reqPath)
                 };
             } catch (err) {
-                console.log('Request that caused error:', data);
-                console.log('Error while trying to parse Host from the above request:', err);
+                console.log('\t\t\t --> Request that caused error: <--\n', data);
+                console.log('\t\t\t --> Error while trying to parse Host from the above request: <--\n', err);
                 try {
                     req.write('Error')
                 } catch (writeErr) {
-                    console.log('Error writing 404 Message (the socket probably closed...):', writeErr);
+                    console.log('\t\t\t --> Error writing 404 Message (the socket probably closed...)\n: <--', writeErr);
                 }
             }
             // Do different things based on what we got
@@ -123,7 +123,11 @@ const forwardRequest = function ({port, location, data, req, path}) {
     middleMan.on("data", function (res) {
         // Hand the response back to the requestee
         if (didEnd === false) {
-            req.write(res);
+            try {
+                req.write(res);
+            } catch (err) {
+                console.log('\t\t\t --> Error writing 404 Message in EXCHANGE (the socket probably closed...)\n: <--', err);
+            }
         } else {
             req.destroy();
         }
