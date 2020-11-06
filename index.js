@@ -105,7 +105,8 @@ const forwardRequest = function ({port, location, data, req, path}) {
     req.setKeepAlive(true, 5000);
     // Set up handling to make sure we can deal with a closed socket:
     let didEnd = false;
-    req.on('end' , () => didEnd = true)
+    req.on('end' , () => didEnd = true);
+    req.on('timeout', () => didEnd = true);
     // When we get data back...
     middleMan.on("data", function (res) {
         // Hand the response back to the requestee
