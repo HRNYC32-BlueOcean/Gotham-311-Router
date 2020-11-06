@@ -1,8 +1,8 @@
 const net = require('net');
-const { on } = require('process');
-
+console.log('File read')
 net
     .createServer(function (data) {
+        console.log('Server Created')
         data.setEncoding('utf8');
     })
     .on("connection", (req) => {
@@ -75,7 +75,9 @@ net
     })
     .listen({
         port: 8080,
-        host: "127.0.0.1",
+        host: "localhost",
+        readableAll: true,
+        writableAll: true,
     });
 
 const forwardRequest = function ({port, location, data, req, path}) {
