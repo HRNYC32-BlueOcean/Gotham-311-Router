@@ -31,48 +31,49 @@ net
                         if (reqPath !== null) reqPath = reqPath[0]; // If we didn't get null we only want the first result
                     
                     console.log(subdomain, reqPath)
+
+                    // Do different things based on what we got
+                    switch(subdomain) {
+                        case null:
+                        case 'www':
+                            forwardRequest({
+                                port: 80,
+                                location: 'desolate-journey-88560.herokuapp.com',
+                                data,
+                                req,
+                                path: reqPath
+                            });
+                            break;
+                        case 'api':
+                            forwardRequest({
+                                port: 80,
+                                location: 'nameless-mountain-18450.herokuapp.com',
+                                data,
+                                req,
+                                path: reqPath
+                            });
+                            break;
+                        case 'employee':
+                            forwardRequest({
+                                port: 80,
+                                location: 'dry-temple-86477.herokuapp.com',
+                                data,
+                                req,
+                                path: reqPath
+                            }); 
+                            break;  
+                        default:
+                            console.log('404')
+                    }
                 };
             } catch (err) {
                 console.log('\t\t\t --> Request that caused error: <--\n', data);
                 console.log('\t\t\t --> Error while trying to parse Host from the above request: <--\n', err);
                 try {
-                    req.write('Error')
+                    req.write('400')
                 } catch (writeErr) {
                     console.log('\t\t\t --> Error writing 404 Message (the socket probably closed...)\n: <--', writeErr);
                 }
-            }
-            // Do different things based on what we got
-            switch(subdomain) {
-                case null:
-                case 'www':
-                    forwardRequest({
-                        port: 80,
-                        location: 'desolate-journey-88560.herokuapp.com',
-                        data,
-                        req,
-                        path: reqPath
-                    });
-                    break;
-                case 'api':
-                    forwardRequest({
-                        port: 80,
-                        location: 'nameless-mountain-18450.herokuapp.com',
-                        data,
-                        req,
-                        path: reqPath
-                    });
-                    break;
-                case 'employee':
-                    forwardRequest({
-                        port: 80,
-                        location: 'dry-temple-86477.herokuapp.com',
-                        data,
-                        req,
-                        path: reqPath
-                    }); 
-                    break;  
-                default:
-                    console.log('404')
             }
         });
     })
