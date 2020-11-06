@@ -78,7 +78,7 @@ net
         });
     })
     .on("error", (err) => {
-        throw err;
+        console.error('\t\t\t --> SERVER-BASED ERROR\n: <--', writeErr);
     })
     .on('end', () => {
         // Do stuff
