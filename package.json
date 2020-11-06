@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "https://github.com/HRNYC32-BlueOcean/Gotham-311-Router",
   "author": "DavidDavydovTech <davydovjd611@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  }
 }
