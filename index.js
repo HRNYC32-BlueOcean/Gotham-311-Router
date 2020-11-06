@@ -16,18 +16,22 @@ net
                 hostLine = data
                     .match(/host:.{0,}/gi) // Match the first instance of 'Host:'
                 
-                if (hostLine === null || (typeof hostLine === 'array' && hostLine.length < 1)) throw new Error ('No Hostname! Rejecting request.');
-                hostLine = hostLine[0];
+                if (hostLine === null || (typeof hostLine === 'array' && hostLine.length < 1)) { 
+                    req.destroy();
+                    throw new Error ('No Hostname! Rejecting request.'); 
+                } else {
+                    hostLine = hostLine[0];
 
-                subdomain = hostLine// Get what's between 'host: ' and '.gotham311.xyz' (returns null if nothing found)
-                    .match(/(?<=host:[ ]{0,})([^ ][^.]{0,})(?=.gotham311.xyz)/gi);
-                    if (subdomain !== null) subdomain = subdomain[0]; // If we didn't get null we only want the first result
-
-                reqPath = hostLine
-                    .match(/(?<=host:[^/]{0,})\/.{0,}/gi);
-                    if (reqPath !== null) reqPath = reqPath[0]; // If we didn't get null we only want the first result
-                
-                console.log(subdomain, reqPath)
+                    subdomain = hostLine// Get what's between 'host: ' and '.gotham311.xyz' (returns null if nothing found)
+                        .match(/(?<=host:[ ]{0,})([^ ][^.]{0,})(?=.gotham311.xyz)/gi);
+                        if (subdomain !== null) subdomain = subdomain[0]; // If we didn't get null we only want the first result
+    
+                    reqPath = hostLine
+                        .match(/(?<=host:[^/]{0,})\/.{0,}/gi);
+                        if (reqPath !== null) reqPath = reqPath[0]; // If we didn't get null we only want the first result
+                    
+                    console.log(subdomain, reqPath)
+                };
             } catch (err) {
                 console.log(data)
                 console.log(err);
